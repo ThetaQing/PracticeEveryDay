@@ -1,0 +1,57 @@
+*1、读取图片
+read_image (Image, 'F:/Code/picTest/汉字识别/2.png')
+rgb1_to_gray (Image, GrayImage)
+*2、预处理，灰度变换
+scale_image (GrayImage, ImageScaled, 2.09016, -190)
+
+*3、字符分割
+threshold (ImageScaled, Regions, 72, 255)
+
+connection (Regions, ConnectedRegions)
+select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 151.2, 573.35)
+union1 (SelectedRegions, RegionUnion)
+shape_trans (RegionUnion, RegionTrans, 'rectangle1')
+orientation_region (RegionTrans, Phi)
+area_center (RegionTrans, Area, Row, Column)
+vector_angle_to_rigid (Row, Column, Phi, Row, Column, 3.14, HomMat2D)
+affine_trans_image (Image, ImageAffineTrans, HomMat2D, 'constant', 'false')
+affine_trans_region (RegionTrans, RegionAffineTrans, HomMat2D, 'nearest_neighbor')
+reduce_domain (ImageAffineTrans, RegionAffineTrans, ImageReduced)
+rgb1_to_gray (ImageReduced, GrayImage1)
+
+threshold (GrayImage1, Regions1, 128, 250)
+
+connection (Regions1, ConnectedRegions1)
+sort_region (ConnectedRegions1, SortedRegions, 'character', 'true', 'row')
+count_obj (ConnectedRegions1, Number)
+for i := 1 to Number by 1
+    select_obj (SortedRegions, SingleWord, i)
+    
+endfor
+*4、形成trf文件，将字符图像与字符相关联
+words:=['数','字','图','像','处','理','的','M','A','T','L','A','B','实','现','实现','第','2','(','MA',')','TLAB']
+TrainFile:='F://word.trf'
+
+for i := 1 to Number by 1
+    select_obj (SortedRegions, SingleWord, i)
+    append_ocr_trainf (SingleWord, ImageAffineTrans, words[i-1], TrainFile)
+endfor
+
+*.omc文件是经过训练的
+FontFile:= 'F://word.omc'
+
+read_ocr_trainf_names (TrainFile, CharacterNames, CharacterCount)
+NumHidden:=20
+*1 创建分类器
+create_ocr_class_mlp (25, 65, 'constant', 'default', CharacterNames, 80, 'none', 10, 42, OCRHandle)
+
+*2 训练分类器
+trainf_ocr_class_mlp (OCRHandle, TrainFile, 200, 1, 0.01, Error, ErrorLog)
+*3 保存omc文件
+write_ocr_class_mlp (OCRHandle, FontFile)
+*4 清除句柄
+clear_ocr_class_mlp (OCRHandle)
+
+*5 识别
+read_ocr_class_mlp ('F://word.omc', OCRHandle1)
+do_ocr_multi_class_mlp (SortedRegions, ImageReduced, OCRHandle1, Class, Confidence)
