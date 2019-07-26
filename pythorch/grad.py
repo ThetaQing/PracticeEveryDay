@@ -31,4 +31,5 @@ ds = torch.autograd.grad(p[1], [a], retain_graph=True)
 print(ds)
 
 # 如果需要对其他参数求梯度改变索引即可。
+#2019.07.26未完成
 
