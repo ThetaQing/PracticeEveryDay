@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCtest1", "MFCtest1\MFCtest1.vcxproj", "{F0D5823C-962C-4702-ACB4-9E05FA933AAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0D5823C-962C-4702-ACB4-9E05FA933AAC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F0D5823C-962C-4702-ACB4-9E05FA933AAC}.Debug|Win32.Build.0 = Debug|Win32
+		{F0D5823C-962C-4702-ACB4-9E05FA933AAC}.Release|Win32.ActiveCfg = Release|Win32
+		{F0D5823C-962C-4702-ACB4-9E05FA933AAC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
